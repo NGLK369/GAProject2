@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { MdFlag } from 'react-icons/md';
 
 const CurrencyConverter = () => {
   const [baseCurrency, setBaseCurrency] = useState('SGD');
@@ -78,42 +79,61 @@ const CurrencyConverter = () => {
   return (
     <div>
       <h2>Currency Converter</h2>
-      <div>
-        <label>
-          Base Currency:
-          <select value={baseCurrency} onChange={handleBaseCurrencyChange}>
-            {currencies.map((currency) => (
-              <option key={currency} value={currency}>
-                {currency}
-              </option>
-            ))}
-          </select>
-        </label>
+      <div className="container">
+        <div className="form-group">
+          <label className="label">
+            Base Currency:
+            <select
+              value={baseCurrency}
+              onChange={handleBaseCurrencyChange}
+              className="select"
+            >
+              {currencies.map((currency) => (
+                <option key={currency} value={currency}>
+                  {currency}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="form-group">
+          <label className="label">
+            Target Currency:
+            <select
+              value={targetCurrency}
+              onChange={handleTargetCurrencyChange}
+              className="select"
+            >
+              {currencies.map((currency) => (
+                <option key={currency} value={currency}>
+                  {currency}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </div>
-      <div>
-        <label>
-          Target Currency:
-          <select value={targetCurrency} onChange={handleTargetCurrencyChange}>
-            {currencies.map((currency) => (
-              <option key={currency} value={currency}>
-                {currency}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-      <div>
-        <label>
+      <div className="form-group">
+        <label className="label">
           Amount:
-          <input type="number" value={amount} onChange={handleAmountChange} />
+          <input
+            type="number"
+            value={amount}
+            onChange={handleAmountChange}
+            className="input"
+          />
         </label>
       </div>
       <div>
-        <button onClick={convertCurrency}>Convert</button>
-        <button onClick={resetConverter}>Reset</button>
+        <button onClick={convertCurrency} className="button">
+          Convert
+        </button>
+        <button onClick={resetConverter} className="button">
+          Reset
+        </button>
       </div>
       <div>
-        <h3>
+        <h3 className="converted-amount">
           Converted Amount: {convertedAmount} {targetCurrency}
         </h3>
       </div>
