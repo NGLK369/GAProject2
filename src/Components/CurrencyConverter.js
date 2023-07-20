@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MdFlag } from 'react-icons/md';
 
 const CurrencyConverter = () => {
   const [baseCurrency, setBaseCurrency] = useState('SGD');
@@ -8,6 +7,7 @@ const CurrencyConverter = () => {
   const [amount, setAmount] = useState(0);
   const [exchangeRates, setExchangeRates] = useState({});
   const [convertedAmount, setConvertedAmount] = useState(0);
+  const [conversionTimestamp, setConversionTimestamp] = useState('');
 
   const currencies = [
     "SGD",
@@ -38,10 +38,11 @@ const CurrencyConverter = () => {
   const fetchExchangeRates = async () => {
     const appId = '06c38c7636b64372843be67c14d79ed0'; // Replace with your Open Exchange Rates App ID
     const url = `https://openexchangerates.org/api/latest.json?app_id=${appId}`;
-
+  
     try {
       const response = await axios.get(url);
       setExchangeRates(response.data.rates);
+      setConversionTimestamp(new Date(response.data.timestamp * 1000).toString());
     } catch (error) {
       console.error('Error fetching exchange rates:', error);
     }
@@ -73,6 +74,12 @@ const CurrencyConverter = () => {
 
   const resetConverter = () => {
     setAmount(0);
+    setConvertedAmount(0);
+  };
+
+  const reverseConversion = () => {
+    setBaseCurrency(targetCurrency);
+    setTargetCurrency(baseCurrency);
     setConvertedAmount(0);
   };
 
@@ -112,17 +119,22 @@ const CurrencyConverter = () => {
             </select>
           </label>
         </div>
-      </div>
-      <div className="form-group">
-        <label className="label">
-          Amount:
-          <input
-            type="number"
-            value={amount}
-            onChange={handleAmountChange}
-            className="input"
-          />
-        </label>
+        <div className="form-group">
+          <label className="label">
+            Amount:
+            <input
+              type="number"
+              value={amount}
+              onChange={handleAmountChange}
+              className="input"
+            />
+          </label>
+        </div>
+        <div className="form-group">
+          <button onClick={reverseConversion} className="button">
+            Reverse Conversion
+          </button>
+        </div>
       </div>
       <div>
         <button onClick={convertCurrency} className="button">
@@ -136,6 +148,9 @@ const CurrencyConverter = () => {
         <h3 className="converted-amount">
           Converted Amount: {convertedAmount} {targetCurrency}
         </h3>
+        {conversionTimestamp && (
+          <p className="conversion-timestamp">Conversion Rate as of: {conversionTimestamp}</p>
+        )}
       </div>
     </div>
   );
