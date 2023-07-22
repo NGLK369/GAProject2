@@ -127,3 +127,8 @@ td {
   background-color: #007bff; /* Set the background color to blue (#007bff) */
   color: #fff; /* Set text color to white */
 }
+
+.historical-data-container {
+  max-height: 300px; /* Set a fixed height for the container */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
