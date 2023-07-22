@@ -1,91 +1,129 @@
-.App {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  text-align: center;
-  background-color: #f5f5f5;
+/* Currency Converter Container */
+.currency-converter-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
+/* Container Styling */
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 400px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-  color: #333;
-  font-size: 24px;
+  align-items: center; /* Center the form elements horizontally */
   margin-bottom: 20px;
 }
 
+/* Form Group Styling */
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center; /* Center the label and input elements horizontally */
 }
 
+/* Label Styling */
 .label {
   font-weight: bold;
-  text-align: left; /* Align text to the left */
+  margin-right: 10px;
 }
 
+/* Select Input Styling */
 .select {
+  width: 120px;
   padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
   font-size: 16px;
-  width: 120px; /* Set a specific width for consistent size */
-  text-align: left; /* Align text to the left */
-  margin-right: 10px; /* Add margin to create space between the select boxes */
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
-
+/* Input Styling */
 .input {
+  width: 100%;
   padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
   font-size: 16px;
-  width: 100px;
-  text-align: left; /* Align text to the left */
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
-.button-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
+/* Button Styling */
 .button {
-  padding: 10px 20px;
-  border-radius: 5px;
-  background-color: green;
+  background-color: #007bff;
   color: #fff;
-  border: none;
+  padding: 10px 20px;
   font-size: 16px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  margin-right: 10px; /* Add margin-right for spacing */
+  margin-right: 10px;
 }
 
-.button:last-child {
-  margin-right: 0; /* Remove margin-right for the last button */
-}
-
-
-.button:hover {
-  background-color: #48c9e0;
-}
-
-
+/* Converted Amount Styling */
 .converted-amount {
-  font-size: 24px;
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Conversion Timestamp Styling */
+.conversion-timestamp {
+  font-size: 14px;
+  color: #777;
+  margin-top: 10px;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
   margin-top: 20px;
 }
 
-.error {
-  color: red;
+/* Table Header Cell Styling */
+th {
+  background-color: #f2f2f2;
+  padding: 8px;
+  text-align: left;
+}
+
+/* Table Data Cell Styling */
+td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* View History Button Styling */
+.button.view-history-button {
+  margin-top: 20px;
+  background-color: #28a745;
+}
+
+.input-smaller {
+  width: 80px; 
+  padding: 5px;
+  font-size: 16px;
+}
+
+.currency-converter-header {
+  text-align: center;
+  margin-right: 20px;
+  font-size: 40px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.buttons-container button {
+  padding: 10px 20px; /* Adjust padding to change button size */
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px; /* Add some spacing between buttons */
+  background-color: #007bff; /* Set the background color to blue (#007bff) */
+  color: #fff; /* Set text color to white */
 }

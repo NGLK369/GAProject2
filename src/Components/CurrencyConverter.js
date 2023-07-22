@@ -8,6 +8,8 @@ const CurrencyConverter = () => {
   const [exchangeRates, setExchangeRates] = useState({});
   const [convertedAmount, setConvertedAmount] = useState(0);
   const [conversionTimestamp, setConversionTimestamp] = useState('');
+  const [showHistory, setShowHistory] = useState(false);
+  const [historyData, setHistoryData] = useState([]);
 
   const currencies = [
     "SGD",
@@ -31,12 +33,13 @@ const CurrencyConverter = () => {
     "VND",
   ];
 
+  const appId = '06c38c7636b64372843be67c14d79ed0'; // Replace with your Open Exchange Rates App ID
+
   useEffect(() => {
     fetchExchangeRates();
   }, []);
 
   const fetchExchangeRates = async () => {
-    const appId = '06c38c7636b64372843be67c14d79ed0'; // Replace with your Open Exchange Rates App ID
     const url = `https://openexchangerates.org/api/latest.json?app_id=${appId}`;
   
     try {
@@ -83,9 +86,65 @@ const CurrencyConverter = () => {
     setConvertedAmount(0);
   };
 
+  const handleViewHistory = async () => {
+    const historyUrl = `https://openexchangerates.org/api/historical/${getFormattedDate()}.json?app_id=${appId}`;
+  
+    try {
+      const response = await axios.get(historyUrl);
+      setHistoryData(response.data.rates);
+      setShowHistory(true);
+    } catch (error) {
+      console.error('Error fetching historical exchange rates:', error);
+    }
+  };
+
+  const getFormattedDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    month = month < 10 ? `0${month}` : month;
+    let day = today.getDate();
+    day = day < 10 ? `0${day}` : day;
+    return `${year}-${month}-${day}`;
+  };
+
+  const HistoricalData = ({ showAll }) => {
+    const displayData = showAll
+      ? Object.keys(historyData)
+      : Object.keys(historyData).slice(0, 10);
+
+    return (
+      <div>
+        <h3>Historical Exchange Rates</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Currency</th>
+              <th>Exchange Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            {displayData.map((currency) => (
+              <tr key={currency}>
+                <td>{currency}</td>
+                <td>{historyData[currency]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const [showAllCurrencies, setShowAllCurrencies] = useState(false);
+
+  const handleToggleCurrencies = () => {
+    setShowAllCurrencies((prevShowAll) => !prevShowAll);
+  };
+
   return (
     <div>
-      <h2>Currency Converter</h2>
+      <h2 className="currency-converter-header">Currency Converter</h2>
       <div className="container">
         <div className="form-group">
           <label className="label">
@@ -120,15 +179,15 @@ const CurrencyConverter = () => {
           </label>
         </div>
         <div className="form-group">
-          <label className="label">
-            Amount:
-            <input
-              type="number"
-              value={amount}
-              onChange={handleAmountChange}
-              className="input"
-            />
-          </label>
+  <label className="label">
+    Amount:
+    <input
+      type="number"
+      value={amount}
+      onChange={handleAmountChange}
+      className="input input-smaller" // Added "input-smaller" class
+         />
+            </label>
         </div>
         <div className="form-group">
           <button onClick={reverseConversion} className="button">
@@ -136,12 +195,15 @@ const CurrencyConverter = () => {
           </button>
         </div>
       </div>
-      <div>
-        <button onClick={convertCurrency} className="button">
+      <div className="buttons-container">
+        <button onClick={convertCurrency}>
           Convert
         </button>
-        <button onClick={resetConverter} className="button">
+        <button onClick={resetConverter}>
           Reset
+        </button>
+        <button onClick={handleViewHistory} className="view-history-button">
+          View History
         </button>
       </div>
       <div>
@@ -152,6 +214,16 @@ const CurrencyConverter = () => {
           <p className="conversion-timestamp">Conversion Rate as of: {conversionTimestamp}</p>
         )}
       </div>
+      {showHistory && (
+        <div>
+          <HistoricalData showAll={showAllCurrencies} />
+          {!showAllCurrencies && (
+            <button onClick={handleToggleCurrencies} className="button">
+              Show All Currencies
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
