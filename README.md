@@ -38,6 +38,3 @@ The app will display the converted amount here, along with the target currency.
 
 # Conversion Timestamp:
 This area will show the timestamp of the latest conversion.
-
-# Historical Data:
-When the user clicks the "View History" button, this section will show a table with historical exchange rates.
