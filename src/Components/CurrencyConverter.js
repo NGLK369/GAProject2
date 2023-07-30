@@ -11,6 +11,7 @@ const CurrencyConverter = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [historyData, setHistoryData] = useState([]);
 
+  // option list of currency
   const currencies = [
     "SGD",
     "MYR",
@@ -33,8 +34,9 @@ const CurrencyConverter = () => {
     "VND",
   ];
 
-  const appId = '06c38c7636b64372843be67c14d79ed0'; // Replace with your Open Exchange Rates App ID
+  const appId = '06c38c7636b64372843be67c14d79ed0'; // Open Exchange Rates App ID
 
+  // fetch latest rate
   useEffect(() => {
     fetchExchangeRates();
   }, []);
@@ -63,6 +65,7 @@ const CurrencyConverter = () => {
     setAmount(event.target.value);
   };
 
+  // convert base on input value
   const convertCurrency = () => {
     const baseRate = exchangeRates[baseCurrency];
     const targetRate = exchangeRates[targetCurrency];
@@ -75,17 +78,20 @@ const CurrencyConverter = () => {
     }
   };
 
+  // reset function
   const resetConverter = () => {
     setAmount(0);
     setConvertedAmount(0);
   };
 
+  // swap direction
   const reverseConversion = () => {
     setBaseCurrency(targetCurrency);
     setTargetCurrency(baseCurrency);
     setConvertedAmount(0);
   };
 
+  // to view history
   const handleViewHistory = async () => {
     const historyUrl = `https://openexchangerates.org/api/historical/${getFormattedDate()}.json?app_id=${appId}`;
 
@@ -99,6 +105,7 @@ const CurrencyConverter = () => {
     }
   };
 
+  // date for fetching data
   const getFormattedDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -109,6 +116,7 @@ const CurrencyConverter = () => {
     return `${year}-${month}-${day}`;
   };
 
+  // component to display historical data of xchange rate
   const HistoricalData = ({ showAll }) => {
     const displayData = showAll
       ? Object.keys(historyData)
@@ -147,6 +155,7 @@ const CurrencyConverter = () => {
 
   const [showAllCurrencies, setShowAllCurrencies] = useState(false);
 
+  // function to toggle
   const handleToggleCurrencies = () => {
     setShowAllCurrencies((prevShowAll) => !prevShowAll);
   };
