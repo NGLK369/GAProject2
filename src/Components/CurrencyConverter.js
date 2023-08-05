@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import HistoricalData from './HistoricalData';
+import ConvertCurrency from './ConvertCurrency';
 
 const CurrencyConverter = () => {
   const [baseCurrency, setBaseCurrency] = useState('SGD');
@@ -65,19 +67,6 @@ const CurrencyConverter = () => {
     setAmount(event.target.value);
   };
 
-  // convert base on input value
-  const convertCurrency = () => {
-    const baseRate = exchangeRates[baseCurrency];
-    const targetRate = exchangeRates[targetCurrency];
-
-    if (baseRate && targetRate && !isNaN(baseRate) && !isNaN(targetRate)) {
-      const convertedValue = (parseFloat(amount) / baseRate) * targetRate;
-      setConvertedAmount(convertedValue.toFixed(2));
-    } else {
-      setConvertedAmount('Invalid exchange rate');
-    }
-  };
-
   // reset function
   const resetConverter = () => {
     setAmount(0);
@@ -114,43 +103,6 @@ const CurrencyConverter = () => {
     let day = today.getDate();
     day = day < 10 ? `0${day}` : day;
     return `${year}-${month}-${day}`;
-  };
-
-  // component to display historical data of xchange rate
-  const HistoricalData = ({ showAll }) => {
-    const displayData = showAll
-      ? Object.keys(historyData)
-      : Object.keys(historyData).slice(0, 10);
-    const moreThan10Currencies = Object.keys(historyData).length > 10;
-
-    return (
-      <div>
-        <h3>Historical Exchange Rates</h3>
-        <div className="historical-data-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Currency</th>
-                <th>Exchange Rate</th>
-              </tr>
-            </thead>
-            <tbody>
-              {displayData.map((currency) => (
-                <tr key={currency}>
-                  <td>{currency}</td>
-                  <td>{historyData[currency]}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {moreThan10Currencies && !showAll && (
-          <button onClick={handleToggleCurrencies} className="button view-history-button">
-            Show All Currencies
-          </button>
-        )}
-      </div>
-    );
   };
 
   const [showAllCurrencies, setShowAllCurrencies] = useState(false);
@@ -214,9 +166,13 @@ const CurrencyConverter = () => {
         </div>
       </div>
       <div className="buttons-container">
-        <button onClick={convertCurrency}>
-          Convert
-        </button>
+        <ConvertCurrency
+          baseCurrency={baseCurrency}
+          targetCurrency={targetCurrency}
+          amount={amount}
+          exchangeRates={exchangeRates}
+          setConvertedAmount={setConvertedAmount}
+        />
         <button onClick={resetConverter}>
           Reset
         </button>
@@ -234,7 +190,7 @@ const CurrencyConverter = () => {
       </div>
       {showHistory && (
         <div>
-          <HistoricalData showAll={showAllCurrencies} />
+          <HistoricalData showAll={showAllCurrencies} handleToggleCurrencies={handleToggleCurrencies} />
         </div>
       )}
     </div>

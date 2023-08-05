@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import CurrencyConverter from './Components/CurrencyConverter';
+import HistoricalData from './Components/HistoricalData';
 
 const App = () => {
   return (
