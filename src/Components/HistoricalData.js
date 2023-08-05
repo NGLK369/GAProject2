@@ -1,36 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const HistoricalData = ({ showAll, historyData, handleToggleCurrencies }) => {
-  const displayData = showAll
-    ? Object.keys(historyData)
-    : Object.keys(historyData).slice(0, 10);
-  const moreThan10Currencies = Object.keys(historyData).length > 10;
+  const itemsPerPage = 10;
+
+  const totalCurrencies = Object.entries(historyData).length;
+
+  const displayedCurrencies = showAll
+    ? Object.entries(historyData)
+    : Object.entries(historyData).slice(0, itemsPerPage);
+
+  const tableStyle = {
+    border: '1px solid #ccc',
+    borderCollapse: 'collapse',
+    width: '100%',
+    marginTop: '10px',
+  };
+
+  const thStyle = {
+    border: '1px solid #ccc',
+    padding: '8px',
+    backgroundColor: '#f2f2f2',
+  };
+
+  const tdStyle = {
+    border: '1px solid #ccc',
+    padding: '8px',
+  };
+
+  const tableContainerStyle = {
+    maxHeight: '300px', // Set the maximum height of the table container
+    overflowY: 'auto',  // Enable vertical scrolling when content exceeds the height
+  };
+
+  const formatRate = (rate) => {
+    return Number(rate).toFixed(5);
+  };
 
   return (
-    <div>
-      <h3>Historical Exchange Rates</h3>
-      <div className="historical-data-container">
-        <table>
+    <div className="historical-data">
+      <h2>Historical exchange rates</h2>
+      <div style={tableContainerStyle}> {/* Wrap the table with the scrolling container */}
+        <table style={tableStyle}>
           <thead>
             <tr>
-              <th>Currency</th>
-              <th>Exchange Rate</th>
+              <th style={thStyle}>Currency Code</th>
+              <th style={thStyle}>Rate</th>
             </tr>
           </thead>
           <tbody>
-            {displayData.map((currency) => (
-              <tr key={currency}>
-                <td>{currency}</td>
-                <td>{historyData[currency]}</td>
+            {displayedCurrencies.map(([currencyCode, rate]) => (
+              <tr key={currencyCode}>
+                <td style={tdStyle}>{currencyCode}</td>
+                <td style={tdStyle}>{formatRate(rate)}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      {moreThan10Currencies && !showAll && (
-        <button onClick={handleToggleCurrencies} className="button view-history-button">
-          Show All Currencies
-        </button>
+      {totalCurrencies > itemsPerPage && (
+        <div style={{ marginTop: '10px' }}>
+          <button onClick={handleToggleCurrencies} className="show-all-button">
+            {showAll ? 'Unshow All' : 'Show All'}
+          </button>
+        </div>
       )}
     </div>
   );
